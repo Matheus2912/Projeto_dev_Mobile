@@ -1,4 +1,4 @@
-package com.example.appdereunioes.ui.dashboard;
+package com.example.appdereunioes.ui.CadastroEvento;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -8,9 +8,9 @@ public class DashboardViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public DashboardViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
+    public DashboardViewModel(MutableLiveData<String> mText) {
+
+        this.mText = mText;
     }
 
     public LiveData<String> getText() {
