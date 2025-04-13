@@ -20,6 +20,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         editEmail = findViewById(R.id.editEmail);
         editSenha = findViewById(R.id.editSenha);
         btnEntrar = findViewById(R.id.btnEntrar);
@@ -38,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
                 finish(); // Impede voltar pra tela de login com o botão "voltar"
             }
         });
+
     }
 }
 

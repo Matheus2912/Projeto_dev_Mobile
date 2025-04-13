@@ -7,10 +7,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import com.example.appdereunioes.R;
 
@@ -48,14 +53,14 @@ public class CadastroEventoFragment extends Fragment {
 
             Toast.makeText(getContext(), "Encontro salvo!", Toast.LENGTH_SHORT).show();
 
-                // (Opcional) Limpar os campos
-                //editTitulo.setText("");
-                //editDescricao.setText("");
-                //editData.setText("");
-                //editHora.setText("");
-                //  editLocal.setText("");
+                // Limpa os Campos de texto
+                editAnfitriao.setText("");
+                editRua.setText("");
+                editBairro.setText("");
+                editNumero.setText("");
+                editData.setText("");
+                editHora.setText("");
             });
-
         ;return root;
     }
     @Override
@@ -67,6 +72,12 @@ public class CadastroEventoFragment extends Fragment {
             if (selectedImageUri != null) {
                 btnFoto.setImageURI(selectedImageUri); // Mostra a imagem no botão
             }
+        }
+    }
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (getActivity() instanceof AppCompatActivity) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         }
     }
 
