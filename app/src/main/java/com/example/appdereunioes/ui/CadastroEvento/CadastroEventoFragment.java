@@ -56,7 +56,7 @@ public class CadastroEventoFragment extends Fragment {
             String enderecoCompleto = rua + ", " + numero + "\n" + bairro;
             String dataHora = data + " às " + hora;
 
-            Evento novoEvento = new Evento(anfitriao, enderecoCompleto, dataHora, null);
+            Evento novoEvento = new Evento(anfitriao, rua, bairro,numero, data, hora ,null);
             EventoRepository.adicionarEvento(novoEvento);
 
 

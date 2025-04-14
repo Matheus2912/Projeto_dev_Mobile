@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.appdereunioes.R;
@@ -16,17 +19,29 @@ import com.example.appdereunioes.R;
 public class ConfirmacaoEventoActivity extends AppCompatActivity {
 
     private ImageView fotoEvento;
-    private TextView txtAnfitriao, txtEndereco;
+    private TextView txtAnfitriao, txtRua, txtBairro, txtNumero, txtDataHora;;
+
     private Button btnConfirmar, btnVerMapa, btnVisualizarConfirmados;
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // OCULTA A ACTION BAR
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+
         setContentView(R.layout.fragment_detalhes_evento);
 
         fotoEvento = findViewById(R.id.fotoEvento);
         txtAnfitriao = findViewById(R.id.txtAnfitriao);
-        txtEndereco = findViewById(R.id.txtEndereco);
+        txtRua = findViewById(R.id.txtRua);
+        txtBairro = findViewById(R.id.txtBairro);
+        txtNumero = findViewById(R.id.txtNumero);
+        txtDataHora = findViewById(R.id.txtDataHora);
+
         btnConfirmar = findViewById(R.id.btnConfirmar);
         btnVerMapa = findViewById(R.id.btnVerMapa);
         btnVisualizarConfirmados = findViewById(R.id.btnVisualizarConfirmados);
@@ -38,8 +53,11 @@ public class ConfirmacaoEventoActivity extends AppCompatActivity {
             Evento evento = EventoRepository.getEventos().get(eventoIndex);
 
             txtAnfitriao.setText("Anfitrião: " + evento.getAnfitriao());
-            txtEndereco.setText("Rua: " + evento.getRua() + "\nBairro: " + evento.getBairro()
-                    + "\nNúmero: " + evento.getNumero() + "\nData e Hora: " + evento.getDataHora());
+            txtRua.setText("Rua: " + evento.getRua());
+            txtBairro.setText("Bairro: " + evento.getBairro());
+            txtNumero.setText("Número: " + evento.getNumero());
+            txtDataHora.setText("Data e Hora: " + evento.getDataHora());
+
 
             if (evento.getImagemUri() != null) {
                 fotoEvento.setImageURI(evento.getImagemUri());

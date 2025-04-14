@@ -14,16 +14,15 @@ public class Evento {
     private String hora;
     private Uri imagemUri; // opcional
 
-    public Evento(String anfitriao, String endereco, String dataHora, Uri imagemUri) {
+    public Evento(String anfitriao, String rua, String numero, String bairro, String data, String hora, Uri imagemUri) {
         this.anfitriao = anfitriao;
-        this.rua = endereco; // pode adaptar
-        this.bairro = "";
-        this.numero = "";
-        this.data = dataHora;
-        this.hora = "";
+        this.rua = rua;
+        this.numero = numero;
+        this.bairro = bairro;
+        this.data = data;
+        this.hora = hora;
         this.imagemUri = imagemUri;
     }
-
 
     // Getters
     public String getAnfitriao() { return anfitriao; }
@@ -36,7 +35,6 @@ public class Evento {
     public String getNumero() {
         return numero;
     }
-    public String getEndereco() { return rua + "\n" + bairro + "\n" + "Número " + numero; }
     public String getDataHora() { return data + " " + hora; }
     public Uri getImagemUri() { return imagemUri; }
 }
