@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.appdereunioes.ui.evento.Evento;
+import com.example.appdereunioes.ui.evento.EventoRepository;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,6 +53,14 @@ public class CadastroEventoFragment extends Fragment {
             String data = editData.getText().toString();
             String hora = editHora.getText().toString();
 
+            String enderecoCompleto = rua + ", " + numero + "\n" + bairro;
+            String dataHora = data + " às " + hora;
+
+            Evento novoEvento = new Evento(anfitriao, enderecoCompleto, dataHora, null);
+            EventoRepository.adicionarEvento(novoEvento);
+
+
+
             Toast.makeText(getContext(), "Encontro salvo!", Toast.LENGTH_SHORT).show();
 
                 // Limpa os Campos de texto
@@ -60,7 +70,8 @@ public class CadastroEventoFragment extends Fragment {
                 editNumero.setText("");
                 editData.setText("");
                 editHora.setText("");
-            });
+                btnFoto.setImageResource(R.drawable.ic_launcher_foreground);
+        });
         ;return root;
     }
     @Override

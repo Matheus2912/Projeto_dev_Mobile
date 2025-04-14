@@ -4,34 +4,41 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.appdereunioes.databinding.FragmentHomeBinding;
+import com.example.appdereunioes.R;
+import com.example.appdereunioes.ui.evento.EventoAdapter;
+import com.example.appdereunioes.ui.evento.EventoRepository;
+
 
 public class HomeFragment extends Fragment {
 
-    private FragmentHomeBinding binding;
+    private RecyclerView recyclerView;
+    private EventoAdapter adapter;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_home, container, false);
 
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        recyclerView = root.findViewById(R.id.recyclerViewEventos);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        adapter = new EventoAdapter(EventoRepository.getEventos(), getContext());
+        recyclerView.setAdapter(adapter);
+
         return root;
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    public void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
+
     }
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -40,3 +47,4 @@ public class HomeFragment extends Fragment {
         }
     }
 }
+
