@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -43,7 +42,7 @@ public class CadastroEventoFragment extends Fragment {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
             startActivityForResult(intent, REQUEST_IMAGE_PICK);
-        }); // <<<<< esse parêntese estava faltando aqui
+        });
 
         btnSalvar.setOnClickListener(v -> {
             String anfitriao = editAnfitriao.getText().toString();
@@ -53,13 +52,8 @@ public class CadastroEventoFragment extends Fragment {
             String data = editData.getText().toString();
             String hora = editHora.getText().toString();
 
-            String enderecoCompleto = rua + ", " + numero + "\n" + bairro;
-            String dataHora = data + " às " + hora;
-
             Evento novoEvento = new Evento(anfitriao, rua, bairro,numero, data, hora ,null);
             EventoRepository.adicionarEvento(novoEvento);
-
-
 
             Toast.makeText(getContext(), "Encontro salvo!", Toast.LENGTH_SHORT).show();
 
@@ -70,7 +64,7 @@ public class CadastroEventoFragment extends Fragment {
                 editNumero.setText("");
                 editData.setText("");
                 editHora.setText("");
-                btnFoto.setImageResource(R.drawable.ic_launcher_foreground);
+                btnFoto.setImageResource(R.drawable.baseline_create_new_folder_24);
         });
         ;return root;
     }

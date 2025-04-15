@@ -1,45 +1,51 @@
 package com.example.appdereunioes;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.appdereunioes.MainActivity;
-import com.example.appdereunioes.R;
+import com.example.appdereunioes.User.CadastroActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText editEmail, editSenha;
     private Button btnEntrar;
+    private TextView txtCadastro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
         editEmail = findViewById(R.id.editEmail);
         editSenha = findViewById(R.id.editSenha);
         btnEntrar = findViewById(R.id.btnEntrar);
+        txtCadastro = findViewById(R.id.txtCadastro);
 
-        btnEntrar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnEntrar.setOnClickListener(v -> {
+            String email = editEmail.getText().toString().trim();
+            String senha = editSenha.getText().toString().trim();
 
-                // Aqui você pode adicionar alguma validação falsa se quiser
-                String email = editEmail.getText().toString().trim();
-                String senha = editSenha.getText().toString().trim();
+            SharedPreferences prefs = getSharedPreferences("usuarios", MODE_PRIVATE);
+            String savedEmail = prefs.getString("email", null);
+            String savedSenha = prefs.getString("senha", null);
 
-                // Redirecionar para tela principal (MainActivity)
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish(); // Impede voltar pra tela de login com o botão "voltar"
+            if (email.equals(savedEmail) && senha.equals(savedSenha)) {
+                Toast.makeText(this, "Login realizado!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
+            } else {
+                Toast.makeText(this, "Email ou senha incorretos", Toast.LENGTH_SHORT).show();
             }
         });
 
+        txtCadastro.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this, CadastroActivity.class));
+        });
     }
 }
 
