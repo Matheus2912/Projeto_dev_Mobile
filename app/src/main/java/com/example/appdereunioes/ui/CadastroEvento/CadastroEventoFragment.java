@@ -53,7 +53,7 @@ public class CadastroEventoFragment extends Fragment {
             String data = editData.getText().toString();
             String hora = editHora.getText().toString();
 
-            Evento novoEvento = new Evento(anfitriao, rua, bairro,numero, data, hora ,imagemSelecionadaUri);
+            Evento novoEvento = new Evento(anfitriao, rua, numero, bairro, data, hora, imagemSelecionadaUri);
             EventoRepository.adicionarEvento(novoEvento);
 
             Toast.makeText(getContext(), "Encontro salvo!", Toast.LENGTH_SHORT).show();

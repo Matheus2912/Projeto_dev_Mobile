@@ -35,6 +35,11 @@ public class LoginActivity extends AppCompatActivity {
             String savedSenha = prefs.getString("senha", null);
 
             if (email.equals(savedEmail) && senha.equals(savedSenha)) {
+                // Armazena o usuário logado com a chave "usuario_logado"
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("usuario_logado", email);
+                editor.apply();
+
                 Toast.makeText(this, "Login realizado!", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
@@ -48,4 +53,5 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 }
+
 

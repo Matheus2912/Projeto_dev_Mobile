@@ -3,31 +3,32 @@ package com.example.appdereunioes.ui.evento;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.appdereunioes.R;
+import com.example.appdereunioes.User.PresencaManager;
+import com.example.appdereunioes.User.PresencasConfirmadasActivity;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class ConfirmacaoEventoActivity extends AppCompatActivity {
 
     private ImageView fotoEvento;
-    private TextView txtAnfitriao, txtRua, txtBairro, txtNumero, txtDataHora;;
-
+    private TextView txtAnfitriao, txtRua, txtBairro, txtNumero, txtDataHora;
     private Button btnConfirmar, btnVerMapa, btnVisualizarConfirmados;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // OCULTA A ACTION BAR
+        // Oculta a action bar se houver
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-
         setContentView(R.layout.fragment_detalhes_evento);
 
         fotoEvento = findViewById(R.id.fotoEvento);
@@ -51,8 +52,17 @@ public class ConfirmacaoEventoActivity extends AppCompatActivity {
             txtRua.setText("Rua: " + evento.getRua());
             txtBairro.setText("Bairro: " + evento.getBairro());
             txtNumero.setText("Número: " + evento.getNumero());
-            txtDataHora.setText("Data e Hora: " + evento.getDataHora());
-
+            String dataHoraOriginal = evento.getDataHora(); // String "dd/MM/yyyy HH:mm"
+            String dataHoraFormatada = dataHoraOriginal;
+            try {
+                SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+                Date dataObj = parser.parse(dataHoraOriginal);
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy 'às' HH:mm", Locale.getDefault());
+                dataHoraFormatada = formatter.format(dataObj);
+            } catch (Exception e) {
+                Log.e("ConfirmacaoEvento", "Erro ao formatar data/hora: " + dataHoraOriginal, e);
+            }
+            txtDataHora.setText("Data e Hora: " + dataHoraFormatada);
 
             if (evento.getImagemUri() != null) {
                 fotoEvento.setImageURI(evento.getImagemUri());
@@ -61,8 +71,16 @@ public class ConfirmacaoEventoActivity extends AppCompatActivity {
             }
 
             btnConfirmar.setOnClickListener(v -> {
-                Toast.makeText(this, "Presença confirmada!", Toast.LENGTH_SHORT).show();
-                // Aqui você pode adicionar o evento a uma lista de confirmados se quiser
+                String email = getSharedPreferences("usuarios", MODE_PRIVATE)
+                        .getString("usuario_logado", null);
+
+                if (email != null) {
+                    PresencaManager.confirmarPresenca(this, String.valueOf(eventoIndex), email);
+                    Toast.makeText(this, "Presença confirmada!", Toast.LENGTH_SHORT).show();
+                    finish(); // ou redirecione para outra tela, se necessário
+                } else {
+                    Toast.makeText(this, "Erro: usuário não logado!", Toast.LENGTH_SHORT).show();
+                }
             });
 
             btnVerMapa.setOnClickListener(v -> {
@@ -70,7 +88,6 @@ public class ConfirmacaoEventoActivity extends AppCompatActivity {
                 Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(endereco));
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
-
                 if (mapIntent.resolveActivity(getPackageManager()) != null) {
                     startActivity(mapIntent);
                 } else {
@@ -78,8 +95,13 @@ public class ConfirmacaoEventoActivity extends AppCompatActivity {
                 }
             });
 
+            // Alteração: abrindo a activity de presenças confirmadas em vez de exibir apenas um Toast.
             btnVisualizarConfirmados.setOnClickListener(v -> {
-                Toast.makeText(this, "Funcionalidade em construção...", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(ConfirmacaoEventoActivity.this, PresencasConfirmadasActivity.class);
+                intent.putExtra("eventoId", String.valueOf(eventoIndex));
+                // Se não, você pode usar o nome do anfitrião ou qualquer outra informação significativa.
+                intent.putExtra("eventoTitulo", evento.getAnfitriao());
+                startActivity(intent);
             });
 
         } else {
