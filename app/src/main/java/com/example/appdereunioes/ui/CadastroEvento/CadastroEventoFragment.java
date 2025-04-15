@@ -25,6 +25,7 @@ public class CadastroEventoFragment extends Fragment {
     private ImageButton btnFoto;
     private EditText editAnfitriao, editRua, editData, editHora, editBairro, editNumero;
     private Button btnSalvar;
+    private Uri imagemSelecionadaUri = null;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_cadastro_evento, container, false);
@@ -52,7 +53,7 @@ public class CadastroEventoFragment extends Fragment {
             String data = editData.getText().toString();
             String hora = editHora.getText().toString();
 
-            Evento novoEvento = new Evento(anfitriao, rua, bairro,numero, data, hora ,null);
+            Evento novoEvento = new Evento(anfitriao, rua, bairro,numero, data, hora ,imagemSelecionadaUri);
             EventoRepository.adicionarEvento(novoEvento);
 
             Toast.makeText(getContext(), "Encontro salvo!", Toast.LENGTH_SHORT).show();
@@ -65,6 +66,7 @@ public class CadastroEventoFragment extends Fragment {
                 editData.setText("");
                 editHora.setText("");
                 btnFoto.setImageResource(R.drawable.baseline_create_new_folder_24);
+                imagemSelecionadaUri = null;
         });
         ;return root;
     }
@@ -75,6 +77,7 @@ public class CadastroEventoFragment extends Fragment {
         if (requestCode == REQUEST_IMAGE_PICK && resultCode == Activity.RESULT_OK && data != null) {
             Uri selectedImageUri = data.getData();
             if (selectedImageUri != null) {
+                this.imagemSelecionadaUri = selectedImageUri;
                 btnFoto.setImageURI(selectedImageUri); // Mostra a imagem no botão
             }
         }
